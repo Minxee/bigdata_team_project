@@ -1,5 +1,5 @@
 rm(list=ls()) # clean env
-pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot") # load packages
+pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot", "d3heatmap") # load packages
 
 #############################################################################
 
@@ -101,3 +101,6 @@ ggplot(C, aes(x = likes, y = views, size = dislikes, color = category)) + geom_p
 # Nonprofits & Activism 喜歡比低且評論比高，此類別影片可能較多爭議，很多觀眾討論
 mutate(C, likes_prop = likes / dislikes, comment_prop = 1000 * (comment_count / views)) %>% ggplot(aes(x = category)) + geom_col(aes(y = likes_prop), size = 1, color = "darkblue", fill = "white") + geom_line(aes(y = comment_prop), size = 1.5, color="red", group = 1) + scale_y_continuous(sec.axis = sec_axis(~./100, name = "comment_prop")) + theme(axis.text.x = element_text(angle = 90))
 
+# heatmap
+top10 = names(head(sort(table(mostViews$category),decreasing = T), 10))
+table(format(mostViews[mostViews$category %in% top10, ]$publish_time,"%H"), mostViews[mostViews$category %in% top10, ]$category) %>% as.data.frame.matrix %>% d3heatmap(F,F,col=colorRamp(c('seagreen','lightyellow','red')))
