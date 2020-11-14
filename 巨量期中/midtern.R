@@ -51,7 +51,7 @@ youtube = merge(yt, ctable, by.x = "category_id", by.y = "cid")
 youtube$trending_date = as.Date(youtube$trending_date, format = "%y.%d.%m") 
 # remove 清理環境
 rm(list=c("cjson", "ctable", "yt", "cid")) 
-# add trending_days column，每部影片上熱門天數
+# add trending_days column，新增每部影片上幾天熱門的欄位
 youtube = group_by(youtube, video_id) %>% mutate(trending_days = n())
 # most views of each video，將每部影片最終的資料獨立出來，避免重複統計。
 mostViews = group_by(youtube, video_id) %>% filter(views == max(views))
