@@ -38,13 +38,13 @@ pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot") # loa
 
 ############################################################################
 
-yt = read_csv("./dataset/USvideos.csv") # read csv
+yt = read_csv("./USvideos.csv") # read csv
 cat("開始日期:", min(yt$trending_date), "結束日期:", max(yt$trending_date))
 sapply(yt, function(x) sum(ifelse(is.na(x), 1, 0))) # check NA
 yt[is.na(yt)] = "" # fill NA
 
 # load category JSON file
-cjson = fromJSON("US_category_id.json"); cid = cjson$id; ctable = as.data.frame(cid); ctable$category = cjson$snippet$title
+cjson = fromJSON("./US_category_id.json"); cid = cjson$items$id; ctable = as.data.frame(cid); ctable$category = cjson$items$snippet$title
 # add category name to youtube data frame
 youtube = merge(yt, ctable, by.x = "category_id", by.y = "cid") 
 # trending_date to Date type
