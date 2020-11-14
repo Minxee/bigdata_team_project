@@ -1,6 +1,3 @@
-rm(list=ls()) # clean env
-pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot", "d3heatmap") # load packages
-
 #############################################################################
 
 ## 資料集說明 :
@@ -37,6 +34,9 @@ pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot", "d3he
   # - 與同頻道最近上傳的其他影片相比，影片的表現如何
 
 ############################################################################
+
+rm(list=ls()) # clean env
+pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot", "d3heatmap") # load packages
 
 yt = read_csv("./USvideos.csv") # read csv
 cat("開始日期:", min(yt$trending_date), "結束日期:", max(yt$trending_date))
