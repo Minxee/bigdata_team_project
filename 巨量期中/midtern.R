@@ -40,22 +40,22 @@ pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot") # loa
 
 yt = read_csv("./USvideos.csv") # read csv
 cat("開始日期:", min(yt$trending_date), "結束日期:", max(yt$trending_date))
-sapply(yt, function(x) sum(ifelse(is.na(x), 1, 0))) # check NA
-yt[is.na(yt)] = "" # fill NA
+sapply(yt, function(x) sum(ifelse(is.na(x), 1, 0))) # check NA，discription 有 NA
+yt[is.na(yt)] = "" # fill NA，將 discription NA 填為空字串
 
-# load category JSON file
+# load category JSON file，讀取類別 JSON 檔
 cjson = fromJSON("./US_category_id.json"); cid = cjson$items$id; ctable = as.data.frame(cid); ctable$category = cjson$items$snippet$title
-# add category name to youtube data frame
+# add category name to youtube data frame，新增類別名稱欄位
 youtube = merge(yt, ctable, by.x = "category_id", by.y = "cid") 
-# trending_date to Date type
+# trending_date to Date type，資料型態轉換
 youtube$trending_date = as.Date(youtube$trending_date, format = "%y.%d.%m") 
-# remove
+# remove 清理環境
 rm(list=c("cjson", "ctable", "yt", "cid")) 
-# add trending_days column
+# add trending_days column，每部影片上熱門天數
 youtube = group_by(youtube, video_id) %>% mutate(trending_days = n())
-# most views of each video
+# most views of each video，將每部影片最終的資料獨立出來，避免重複統計。
 mostViews = group_by(youtube, video_id) %>% filter(views == max(views))
-# category dataframe
+# category dataframe，新增類別資料框，針對類別作分析
 C = group_by(mostViews, category) %>% summarise(likes = mean(likes), dislikes = mean(dislikes), comment_count = mean(comment_count), views = mean(views), trending_days = mean(trending_days))
 # C = C %>% mutate(likes_rate = likes / sum(likes), dislikes_rate = dislikes / sum(dislikes), comment_rate = comment_count / sum(comment_count))
 
