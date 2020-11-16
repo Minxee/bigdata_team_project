@@ -66,8 +66,8 @@ C = group_by(mostViews, category) %>% summarise(likes = mean(likes), dislikes = 
 group_by(youtube, category) %>% summarise(n = n()) %>% arrange(desc(n)) %>% ggplot(aes(x = reorder(category, n), y = n, fill = category)) + geom_bar(stat = "identity") + coord_flip()
 # 什麼類別的影片總觀看數最多 : Music、Entertainment、Film & Animation、Comedy、People & Blogs
 group_by(mostViews, category) %>% summarise(total_views = sum(views)) %>% ggplot(aes(x = reorder(category, total_views), y = total_views, fill = category)) + geom_bar(stat = "identity") + coord_flip()
-# 什麼類型的影片觀眾參與度最高(喜歡數 + 倒讚數 + 評論數) : Music、Entertainment、Comedy、People & Blogs、Howto & Style
-group_by(mostViews, category) %>% summarise(engagement = sum(likes + dislikes + comment_count)) %>% arrange(desc(engagement)) %>% ggplot(aes(x = reorder(category, engagement), y = engagement, fill = category)) + geom_bar(stat = "identity") + coord_flip()
+# 什麼類型的影片觀眾參與度最高(喜歡數 + 觀看數 + 評論數) : Music、Entertainment、Comedy、People & Blogs、Howto & Style
+group_by(mostViews, category) %>% summarise(engagement = sum(likes + views + comment_count)) %>% arrange(desc(engagement)) %>% ggplot(aes(x = reorder(category, engagement), y = engagement, fill = category)) + geom_bar(stat = "identity") + coord_flip()
 
 # 什麼類別的影片平均上熱門時間最久 : Shows、Gaming、Music、Film & Animation、Howto & Style
 group_by(youtube, category) %>% summarise(days = mean(trending_days)) %>% ggplot(aes(x = reorder(category, days), y = days, fill = category)) + geom_bar(stat = "identity") + coord_flip()
