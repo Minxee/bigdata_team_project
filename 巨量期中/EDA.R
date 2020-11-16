@@ -9,7 +9,7 @@ group_by(youtube, channel_title) %>% summarise(n = n()) %>% arrange(desc(n)) %>%
 # video publish time : 下午 4 點左右為影片發布熱點
 mutate(youtube, hour = hour(publish_time)) %>% group_by(hour) %>% summarise(n = n()) %>% ggplot(aes(x = hour, y = n)) + geom_line() + scale_x_continuous(breaks=c(0:23)) + labs(x = "hour", y = "number of videos") + geom_vline(xintercept = 16 , color = "#ff2244", size = 1)
 
-# Number of videos by weekdays : 週五、週四影片發布量
+# Number of videos by weekdays : 週五、週四影片發布量最多
 mutate(youtube, weekday = weekdays(publish_time)) %>% group_by(weekday) %>% summarise(n = n()) %>% ggplot(aes(x = reorder(weekday, n), y = n, fill = weekday)) + geom_bar(stat = "identity") + labs(y = "number of videos")
 
 # videos published heat map : 每周二到四下午四點左右為影片發布熱點, Sunday is 0.
