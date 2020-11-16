@@ -4,7 +4,7 @@
 # - 來源 : [kaggle](https://www.kaggle.com/datasnaek/youtube-new)
 # - 資料集 : youtube 發燒影片列表資料，有 US、CA、DE、FR、GB、IN、JP、KR、MX、RU，共 10 個國家的統計資料。
 # - 資料集大小 : 40949 筆資料、16個欄位
-# - 時間 : 2017-12-01 ~ 2018-05-31
+# - 時間 : 2017-11-14 ~ 2018-06-14
 
 ## 欄位說明 :
 # - video_id : 影片 ID
@@ -51,7 +51,6 @@ rm(list=ls()) # clean env
 pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot", "d3heatmap") # load packages
 
 yt = read_csv("./USvideos.csv") # read csv
-cat("開始日期:", min(yt$trending_date), "結束日期:", max(yt$trending_date))
 sapply(yt, function(x) sum(ifelse(is.na(x), 1, 0))) # check NA，discription 有 NA
 yt[is.na(yt)] = "" # fill NA，將 discription NA 填為空字串
 
@@ -60,7 +59,9 @@ cjson = fromJSON("./US_category_id.json"); cid = cjson$items$id; ctable = as.dat
 # add category name to youtube data frame，新增類別名稱欄位
 youtube = merge(yt, ctable, by.x = "category_id", by.y = "cid") 
 # trending_date to Date type，資料型態轉換
-youtube$trending_date = as.Date(youtube$trending_date, format = "%y.%d.%m") 
+youtube$trending_date = as.Date(youtube$trending_date, format = "%y.%d.%m")
+# 日期範圍 : 2017-11-14 ~ 2018-06-14
+cat("開始日期:", format(min(youtube$trending_date)), "結束日期:", format(max(youtube$trending_date)))
 # remove 清理環境
 rm(list=c("cjson", "ctable", "yt", "cid")) 
 # add trending_days column，新增每部影片上幾天熱門的欄位
