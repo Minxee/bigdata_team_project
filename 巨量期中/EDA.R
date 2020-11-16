@@ -15,3 +15,8 @@ mutate(youtube, weekday = weekdays(publish_time)) %>% group_by(weekday) %>% summ
 # videos published heat map : 每周二到四下午四點左右為影片發布熱點, Sunday is 0.
 table(format(youtube$publish_time,"%H"), format(youtube$publish_time,"%w")) %>% as.data.frame.matrix %>% d3heatmap(F, F, col = colorRamp(c("seagreen", "lightyellow", "red")))
 
+# 哥要的圖
+mostViews = mutate(mostViews, time = format(publish_time, "%Y-%m"))
+breaks = append(paste("2017-", c(11, 12), sep =""), paste("2018-0", c(1:6), sep =""))
+group_by(mostViews, category, time) %>% summarise(total_views = log10(sum(views))) %>% ggplot(aes(x = time, y = total_views, group = category, color = category)) + geom_line() + xlim(breaks) + theme(axis.text.x = element_text(angle = 90)) 
+group_by(mostViews, category, time) %>% summarise(total_views = log10(sum(views))) %>% ggplot(aes(x = time, y = total_views, group = category)) + geom_line() + facet_wrap(~ category) 
