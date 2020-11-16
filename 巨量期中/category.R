@@ -38,7 +38,7 @@ corrplot(category_cor, method="number", type="upper")
 
 # heatmap
 top10 = names(head(sort(table(mostViews$category),decreasing = T), 10))
-table(format(mostViews[mostViews$category %in% top10, ]$publish_time,"%H"), mostViews[mostViews$category %in% top10, ]$category) %>% as.data.frame.matrix %>% d3heatmap(F,F,col=colorRamp(c('seagreen','lightyellow','red')))
+table(format(mostViews[mostViews$category %in% top10, ]$publish_time,"%H"), mostViews[mostViews$category %in% top10, ]$category) %>% as.data.frame.matrix %>% d3heatmap(F, F, col = colorRamp(c("seagreen", "lightyellow", "red")))
 
 
 ### 多變數分析
