@@ -1,3 +1,4 @@
+# setwd("~/GitHub/bigdata_team_project/巨量期中")
 rm(list=ls()) # clean env
 pacman::p_load("data.table", "tidyverse", "sqldf", "jsonlite", "corrplot", "d3heatmap") # load packages
 load("./pre_process.rdata") # load pre process data : youtube and mostViews
