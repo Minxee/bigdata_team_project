@@ -36,6 +36,9 @@ ggplot(C, aes(x = dislikes, y = trending_days)) + geom_point() + geom_smooth(met
 category_cor = cor(C[, -1])
 corrplot(category_cor, method="number", type="upper")
 
+# 每個類別平均上熱門的天數 : shows 平均上熱門天數最多
+ggplot(C, aes(x = reorder(category, trending_days), y = trending_days, fill = category)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90))
+
 # heatmap
 top10 = names(head(sort(table(mostViews$category),decreasing = T), 10))
 table(format(mostViews[mostViews$category %in% top10, ]$publish_time,"%H"), mostViews[mostViews$category %in% top10, ]$category) %>% as.data.frame.matrix %>% d3heatmap(F, F, col = colorRamp(c("seagreen", "lightyellow", "red")))

@@ -23,3 +23,12 @@ mostViews = mutate(mostViews, time = format(publish_time, "%Y-%m"))
 breaks = append(paste("2017-", c(11, 12), sep =""), paste("2018-0", c(1:6), sep =""))
 group_by(mostViews, category, time) %>% summarise(total_views = log10(sum(views))) %>% ggplot(aes(x = time, y = total_views, group = category, color = category)) + geom_line() + xlim(breaks) + theme(axis.text.x = element_text(angle = 90)) 
 group_by(mostViews, category, time) %>% summarise(total_views = log10(sum(views))) %>% ggplot(aes(x = time, y = total_views, group = category)) + geom_line() + facet_wrap(~ category) 
+
+# 一天最多 200 支影片上熱門
+nrow(youtube[format(youtube$trending_date) == "2017-11-14", ])
+
+# 影片上熱門天數集中在 0 ~ 6 天
+breaks = as.character(c(0:30))
+mean(mostViews$trending_days) # 平均上熱門 6.44 天
+group_by(mostViews, trending_days) %>% summarise(n = n()) %>% ggplot(aes(x = trending_days, y = n, fill = trending_days)) + geom_bar(stat = "identity") + xlim(breaks)
+
