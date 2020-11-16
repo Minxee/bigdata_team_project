@@ -66,8 +66,8 @@ cat("開始日期:", format(min(youtube$trending_date)), "結束日期:", format
 rm(list=c("cjson", "ctable", "yt", "cid")) 
 # add trending_days column，新增每部影片上幾天熱門的欄位
 youtube = group_by(youtube, video_id) %>% mutate(trending_days = n())
-# add average profit : views / 1000
-youtube$avg_profit = youtube$views / 1000
+# add average profit : views / 1000 * 5
+youtube$avg_profit = youtube$views / 1000 * 5
 # most views of each video，將每部影片最終的資料獨立出來，避免重複統計。
 mostViews = group_by(youtube, video_id) %>% filter(views == max(views))
 
