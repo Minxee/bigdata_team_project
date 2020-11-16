@@ -7,7 +7,7 @@ load("./pre_process.rdata") # load pre process data : youtube and mostViews
 group_by(youtube, channel_title) %>% summarise(n = n()) %>% arrange(desc(n)) %>% head(10) %>% ggplot(aes(x = reorder(channel_title, n), y = n, fill = channel_title)) + geom_bar(stat = "identity") + coord_flip()
 
 # 觀看數前 10 名影片, 音樂 8 : 2 娛樂 
-arrange(mostViews, desc(views)) %>% head(10) %>% select(channel_title, title, views, category)
+arrange(mostViews, desc(views)) %>% head(10) %>% select(channel_title, title, views, category) %>% group_by(category) %>% summarise(n = n()) %>% ggplot(aes(x = category, y = n, fill = category)) + geom_bar(stat = "identity")
 
 # video publish time : 下午 4 點左右為影片發布熱點
 mutate(mostViews, hour = hour(publish_time)) %>% group_by(hour) %>% summarise(n = n()) %>% ggplot(aes(x = hour, y = n)) + geom_line() + scale_x_continuous(breaks=c(0:23)) + labs(x = "hour", y = "number of videos") + geom_vline(xintercept = 16 , color = "#ff2244", size = 1)
