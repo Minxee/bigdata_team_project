@@ -16,7 +16,7 @@ group_by(mostViews, category) %>% summarise(total_views = sum(views)) %>% ggplot
 # 什麼類型的影片觀眾參與度最高(喜歡數 + 倒讚數 + 觀看數 + 評論數) : Music、Entertainment、Film & Animation、Comedy、People & Blogs
 # group_by(mostViews, category) %>% summarise(engagement = sum(likes + dislikes +views + comment_count)) %>% arrange(desc(engagement)) %>% ggplot(aes(x = reorder(category, engagement), y = engagement, fill = category)) + geom_bar(stat = "identity") + coord_flip()
 # Min-max scaling
-normalize <- function(x) {
+normalize = function(x) {
   return ((x - min(x)) / (max(x) - min(x)))
 }
 
