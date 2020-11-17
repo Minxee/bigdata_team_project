@@ -27,8 +27,8 @@ group_by(mostViews, category, time) %>% summarise(total_views = log10(sum(views)
 # 一天最多 200 支影片上熱門
 nrow(youtube[format(youtube$trending_date) == "2017-11-14", ])
 
-# 影片上熱門天數集中在 0 ~ 6 天
-breaks = as.character(c(0:30))
+# 影片上熱門天數集中在 1 ~ 7 天
+breaks = as.character(c(1:30))
 mean(mostViews$trending_days) # 平均上熱門 6.44 天
 group_by(mostViews, trending_days) %>% summarise(n = n()) %>% ggplot(aes(x = trending_days, y = n, fill = trending_days)) + geom_bar(stat = "identity") + xlim(breaks)
 
