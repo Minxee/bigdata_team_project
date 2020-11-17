@@ -14,7 +14,7 @@ group_by(youtube, category) %>% summarise(n = n()) %>% arrange(desc(n)) %>% ggpl
 # 什麼類別的影片總觀看數最多 : Music、Entertainment、Film & Animation、Comedy、People & Blogs
 group_by(mostViews, category) %>% summarise(total_views = sum(views)) %>% ggplot(aes(x = reorder(category, total_views), y = total_views, fill = category)) + geom_bar(stat = "identity") + coord_flip()
 # 什麼類型的影片觀眾參與度最高(喜歡數 + 倒讚數 + 觀看數 + 評論數) : Music、Entertainment、Film & Animation、Comedy、People & Blogs
-# group_by(mostViews, category) %>% summarise(engagement = sum(likes + dislikes +views + comment_count)) %>% arrange(desc(engagement)) %>% ggplot(aes(x = reorder(category, engagement), y = engagement, fill = category)) + geom_bar(stat = "identity") + coord_flip()
+group_by(C, category) %>% summarise(engagement = sum(likes + dislikes + views + comment_count)) %>% arrange(desc(engagement)) %>% ggplot(aes(x = reorder(category, engagement), y = engagement, fill = category)) + geom_bar(stat = "identity") + coord_flip()
 # Min-max scaling
 normalize = function(x) {
   return ((x - min(x)) / (max(x) - min(x)))
@@ -32,11 +32,11 @@ group_by(youtube, category) %>% summarise(days = mean(trending_days)) %>% ggplot
 ### 雙變數分析
 ggplot(C, aes(x = likes, y = dislikes)) + geom_point() + geom_smooth(method = "lm", se = F)
 
-ggplot(C, aes(x = likes, y = comment_count)) + geom_point() + geom_smooth(method = "lm", se = F)
-ggplot(C, aes(x = likes, y = views)) + geom_point() + geom_smooth(method = "lm", se = F)
+ggplot(C, aes(x = log10(likes), y = log10(comment_count))) + geom_point() + geom_smooth(method = "lm", se = F)
+ggplot(C, aes(x = log10(likes), y = log10(views))) + geom_point() + geom_smooth(method = "lm", se = F)
 ggplot(C, aes(x = likes, y = trending_days)) + geom_point() + geom_smooth(method = "lm", se = F)
 
-ggplot(C, aes(x = dislikes, y = comment_count)) + geom_point() + geom_smooth(method = "lm", se = F)
+ggplot(C, aes(x = log10(dislikes), y = log10(comment_count))) + geom_point() + geom_smooth(method = "lm", se = F)
 ggplot(C, aes(x = dislikes, y = views)) + geom_point() + geom_smooth(method = "lm", se = F)
 ggplot(C, aes(x = dislikes, y = trending_days)) + geom_point() + geom_smooth(method = "lm", se = F)
 
