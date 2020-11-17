@@ -7,6 +7,7 @@
 # - 時間 : 2017-11-14 ~ 2018-06-14
 
 ## 欄位說明 :
+# - [欄位說明](https://techpostplus.com/youtube-video-categories-list-faqs-and-solutions/)
 # - video_id : 影片 ID
 # - trending_date : 發燒日期
 # - title : 影片標題
