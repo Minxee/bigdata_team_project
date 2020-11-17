@@ -24,7 +24,7 @@ df_nor = as.data.frame(lapply(C[2:5], normalize))
 df_nor$category = C$category
 
 dfplot = df_nor[, c(1:5)] %>% gather(key, value, -category)
-ggplot(dfplot, aes(x = category)) + geom_bar(aes(y = value, fill = key), position = "fill", stat = 'identity') + labs(y = "proportion") + theme(axis.text.x = element_text(angle = 90))
+ggplot(dfplot, aes(x = category, y = value, fill = key)) + geom_bar(position = "fill", stat = 'identity') + labs(y = "proportion") + theme(axis.text.x = element_text(angle = 90))
 
 # 什麼類別的影片平均上熱門時間最久 : Shows、Gaming、Music、Film & Animation、Howto & Style
 group_by(youtube, category) %>% summarise(days = mean(trending_days)) %>% ggplot(aes(x = reorder(category, days), y = days, fill = category)) + geom_bar(stat = "identity") + coord_flip()
