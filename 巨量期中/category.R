@@ -20,7 +20,7 @@ normalize = function(x) {
   return ((x - min(x)) / (max(x) - min(x)))
 }
 
-df_nor = as.data.frame(lapply(C[2:5],normalize))
+df_nor = as.data.frame(lapply(C[2:5], normalize))
 df_nor$category = C$category
 
 dfplot = df_nor[, c(1:5)] %>% gather(key, value, -category)
