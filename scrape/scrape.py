@@ -13,7 +13,7 @@ unsafe_characters = ['\n', '"']
 # Used to identify columns, currently hardcoded order
 header = ["video_id"] + snippet_features + ["trending_date", "tags", "view_count", "likes", "dislikes",
                                             "comment_count", "thumbnail_link", "comments_disabled",
-                                            "ratings_disabled", "description"]
+                                            "ratings_disabled", "description","duration"]
 
 
 def setup(api_path, code_path):
@@ -35,7 +35,7 @@ def prepare_feature(feature):
 
 def api_request(page_token, country_code):
     # Builds the URL and requests the JSON from it
-    request_url = f"https://www.googleapis.com/youtube/v3/videos?part=id,statistics,snippet{page_token}chart=mostPopular&regionCode={country_code}&maxResults=50&key={api_key}"
+    request_url = f"https://www.googleapis.com/youtube/v3/videos?part=id,statistics,snippet,contentDetails{page_token}chart=mostPopular&regionCode={country_code}&maxResults=50&key={api_key}"
     request = requests.get(request_url)
     if request.status_code == 429:
         print("Temp-Banned due to excess requests, please wait and continue later")
@@ -65,6 +65,7 @@ def get_videos(items):
         # Snippet and statistics are sub-dicts of video, containing the most useful info
         snippet = video['snippet']
         statistics = video['statistics']
+        contentDetails = video['contentDetails']
 
         # This list contains all of the features in snippet that are 1 deep and require no special processing
         features = [prepare_feature(snippet.get(feature, "")) for feature in snippet_features]
@@ -75,6 +76,8 @@ def get_videos(items):
         trending_date = time.strftime("%y.%d.%m")
         tags = get_tags(snippet.get("tags", ["[none]"]))
         view_count = statistics.get("viewCount", 0)
+
+        duration = contentDetails.get("duration")
 
         # This may be unclear, essentially the way the API works is that if a video has comments or ratings disabled
         # then it has no feature for it, thus if they don't exist in the statistics dict we know they are disabled
@@ -95,7 +98,7 @@ def get_videos(items):
         # Compiles all of the various bits of info into one consistently formatted line
         line = [video_id] + features + [prepare_feature(x) for x in [trending_date, tags, view_count, likes, dislikes,
                                                                        comment_count, thumbnail_link, comments_disabled,
-                                                                       ratings_disabled, description]]
+                                                                       ratings_disabled, description,duration]]
         lines.append(",".join(line))
     return lines
 
